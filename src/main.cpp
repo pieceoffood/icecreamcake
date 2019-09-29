@@ -1,7 +1,8 @@
 #include "main.h"
-#include <string>
 #include "config.hpp"
+#include <string>
 #include <iomanip>
+#include "cmath"
 
 pros::Controller master  (pros::E_CONTROLLER_MASTER);
 pros::Motor leftfront  (1, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
@@ -9,12 +10,12 @@ pros::Motor leftback   (10, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCOD
 pros::Motor rightfront (3, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor rightback  (9, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
 pros::Motor lift       (5, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor claw1       (6, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor claw2       (7, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor stacker       (8, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor claw1      (6, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor claw2      (7, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor stacker    (8, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
 
 //pros::ADIDigitalIn limitswitch  (1);
-//pros::ADIAnalogIn potentiameter (2);
+pros::ADIAnalogIn potentiameter (8);
 //pros::ADIGyro gyro (3);
 //pros::ADIDigitalIn limitswitchball(4);
 int automode = 0;
@@ -54,7 +55,11 @@ void initialize() {
   //leftback.set_brake_mode      (pros::E_MOTOR_BRAKE_COAST);
   //rightback.set_brake_mode     (pros::E_MOTOR_BRAKE_COAST);
 
-		/*Create a title label*/
+	/*Create a screen*/
+	lv_obj_t * scr = lv_obj_create(NULL, NULL);
+	lv_scr_load(scr);
+
+	/*Create a title label*/
 	lv_obj_t * label = lv_label_create(lv_scr_act(), NULL);
 	lv_label_set_text(label, "auto selection");
 	lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 5);
@@ -150,16 +155,17 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	std::cout << std::fixed;
 	std::cout << std::setprecision(1);
-  char mytext[100];
+  char mytext[64];
 
   	/*Create a screen*/
-  	lv_obj_t * scr = lv_obj_create(NULL, NULL);
-  	lv_scr_load(scr);                                   /*Load the screen*/
-
+  	//lv_obj_t * scr = lv_obj_create(NULL, NULL);
+  	//lv_scr_load(scr);                                   /*Load the screen*/
+    lv_obj_clean(lv_scr_act());  // clean screen
   	lv_obj_t * title = lv_label_create(lv_scr_act(), NULL);
   	lv_label_set_text(title, "Debug");
-  	lv_obj_align(title, NULL, LV_ALIGN_IN_TOP_MID, 0, 2);  /*Align to the top*/
+  	lv_obj_align(title, NULL, LV_ALIGN_IN_TOP_MID, 0, 20);  /*Align to the top*/
 
   	/*Create anew style*/
   	/*
@@ -182,18 +188,20 @@ void opcontrol() {
   	lv_obj_align(txt, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 20);      /*Align to center*/
 
 	while (true) {
-
-
-				lv_label_set_text(txt, mytext);
+		master.print(1, 0, "leftfront: %8.2f", leftfront.get_position());
+		master.print(2, 0, "flipper: %8.2f", rightfront.get_position());
+		sprintf(mytext, "leftfront: %8.2f\n"
+										"rightfront: %8.2f\n"
+										"arm: %d",
+		       leftfront.get_position(),
+				   rightfront.get_position(),
+					 potentiameter.get_value()
+				 );
+		lv_label_set_text(txt, mytext);
 
 				int updown = master.get_analog (ANALOG_LEFT_Y);
 		    int side   = master.get_analog(ANALOG_LEFT_X);
 				int turn   = master.get_analog (ANALOG_RIGHT_X);
-				//pros::lcd::print(0, "limitswitch: %d, life position: %8.1f\n", limitswitch.get_value(), lift.get_position());
-				//pros::lcd::print(1, "potentiameter: %d\n", potentiameter.get_value());
-				//pros::lcd::print(2, "left: %8.1f, right %8.1f\n", leftfront.get_position(), rightfront.get_position());
-				//pros::lcd::print(3, "catapult: %8.1f, reset %d\n", catapult.get_position(), limitswitchball.get_value());
-				//pros::lcd::print(4, "claw: %8.1f\n", claw.get_position());
 
 		    // press DIGITAL_DOWN to reset zero
 				if (master.get_digital(DIGITAL_DOWN))  {
@@ -242,5 +250,6 @@ void opcontrol() {
 		      else {
 		        stacker.move_velocity(0);
 		    	}
+					pros::delay(20);
 	}
 }
