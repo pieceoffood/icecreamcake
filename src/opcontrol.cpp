@@ -75,16 +75,51 @@ void opcontrol() {
 		//pros::lcd::print(4, "claw: %8.1f\n", claw.get_position());
 
     // press DIGITAL_DOWN to reset zero
-		if ( master.get_digital(DIGITAL_DOWN))  {
+		if (master.get_digital(DIGITAL_DOWN))  {
 			leftfront.tare_position ( );
 			rightfront.tare_position ( );
 		}
 
-		// chasis
+	  	// chasis
 			leftfront.move  (updown + side + turn);
 			leftback.move   (updown - side + turn);
 			rightfront.move (updown - side - turn);
 			rightback.move  (updown + side - turn);
 
+      if (master.get_digital(DIGITAL_L1))  {
+  			lift.move_velocity(100);
+  		}
+      else if (master.get_digital(DIGITAL_L2))  {
+      	lift.move_velocity(-100);
+    	}
+      else {
+    		lift.move_velocity(0);
+    	}
+
+      //claw
+      if (master.get_digital(DIGITAL_R1))  {
+    		claw1.move_velocity(150);
+        claw2.move_velocity(150);
+      }
+      else if (master.get_digital(DIGITAL_R2))  {
+        claw1.move_velocity(-150);
+        claw2.move_velocity(-150);
+      }
+      else {
+        claw1.move_velocity(0);
+        claw2.move_velocity(0);
+      }
+
+      //stacker
+      if (master.get_digital(DIGITAL_X))  {
+        stacker.move_velocity(50);
+
+      }
+      else if (master.get_digital(DIGITAL_A))  {
+        stacker.move_velocity(-50);
+      }
+      else {
+        stacker.move_velocity(0);
+    	}
     }
 }

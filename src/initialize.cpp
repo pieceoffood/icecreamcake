@@ -4,12 +4,15 @@
 
 
 pros::Controller master  (pros::E_CONTROLLER_MASTER);
-pros::Motor leftfront  (6, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor leftback   (7, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor rightfront (9, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor rightback  (10, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor lift       (20, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
-pros::Motor claw       (14, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor leftfront  (1, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor leftback   (10, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor rightfront (3, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor rightback  (9, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor lift       (5, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor claw1       (6, pros::E_MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor claw2       (7, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+pros::Motor stacker       (8, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENCODER_COUNTS);
+
 //pros::ADIDigitalIn limitswitch  (1);
 //pros::ADIAnalogIn potentiameter (2);
 //pros::ADIGyro gyro (3);
@@ -47,7 +50,7 @@ static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
  */
 void initialize() {
   lift.set_brake_mode          (pros::E_MOTOR_BRAKE_HOLD);
-  claw.set_brake_mode          (pros::E_MOTOR_BRAKE_HOLD);
+  //claw.set_brake_mode          (pros::E_MOTOR_BRAKE_HOLD);
   //leftback.set_brake_mode      (pros::E_MOTOR_BRAKE_COAST);
   //rightback.set_brake_mode     (pros::E_MOTOR_BRAKE_COAST);
 
