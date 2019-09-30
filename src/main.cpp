@@ -49,6 +49,7 @@ static lv_res_t btnm_action(lv_obj_t * btnm, const char *txt)
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
 void initialize() {
 	lift.set_brake_mode          (pros::E_MOTOR_BRAKE_HOLD);
   //claw.set_brake_mode          (pros::E_MOTOR_BRAKE_HOLD);
@@ -158,6 +159,7 @@ void opcontrol() {
 	std::cout << std::fixed;
 	std::cout << std::setprecision(1);
   char mytext[64];
+	lift.set_brake_mode          (pros::E_MOTOR_BRAKE_HOLD);
 
   	/*Create a screen*/
   	//lv_obj_t * scr = lv_obj_create(NULL, NULL);
@@ -192,10 +194,12 @@ void opcontrol() {
 		master.print(2, 0, "flipper: %8.2f", rightfront.get_position());
 		sprintf(mytext, "leftfront: %8.2f\n"
 										"rightfront: %8.2f\n"
-										"arm: %d",
+										"stacker: %d\n"
+										"arm: %8.2f",
 		       leftfront.get_position(),
 				   rightfront.get_position(),
-					 potentiameter.get_value()
+					 potentiameter.get_value(),
+					 lift.get_position()
 				 );
 		lv_label_set_text(txt, mytext);
 
@@ -216,6 +220,11 @@ void opcontrol() {
 					rightback.move  (updown + side - turn);
 
 		      if (master.get_digital(DIGITAL_L1))  {
+						// only lift arm the stacker is pushed halfway out
+						while (potentiameter.get_value()>3000) {
+							stacker.move_velocity(50);
+							pros::delay(20);
+						}
 		  			lift.move_velocity(100);
 		  		}
 		      else if (master.get_digital(DIGITAL_L2))  {
@@ -227,12 +236,12 @@ void opcontrol() {
 
 		      //claw
 		      if (master.get_digital(DIGITAL_R1))  {
-		    		claw1.move_velocity(150);
-		        claw2.move_velocity(150);
+		    		claw1.move_velocity(100);
+		        claw2.move_velocity(100);
 		      }
 		      else if (master.get_digital(DIGITAL_R2))  {
-		        claw1.move_velocity(-150);
-		        claw2.move_velocity(-150);
+		        claw1.move_velocity(-100);
+		        claw2.move_velocity(-100);
 		      }
 		      else {
 		        claw1.move_velocity(0);
