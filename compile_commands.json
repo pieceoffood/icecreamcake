@@ -20,10 +20,10 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
-            "/var/folders/4x/ty6t4mtn0p90v1069_dx79kr0000gn/T/tmp1qmsap3w/gui.cpp.o",
-            "src/gui.cpp"
+            "/var/folders/4x/ty6t4mtn0p90v1069_dx79kr0000gn/T/tmpssc7e567/main.cpp.o",
+            "src/main.cpp"
         ],
         "directory": "/Users/langchen/BitTorrent Sync/pieceoffood/icecreamcake",
-        "file": "src/gui.cpp"
+        "file": "src/main.cpp"
     }
 ]
