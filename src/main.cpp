@@ -158,12 +158,13 @@ void autonomous() {}
 void opcontrol() {
 	std::cout << std::fixed;
 	std::cout << std::setprecision(1);
-  char mytext[64];
+
 	lift.set_brake_mode          (pros::E_MOTOR_BRAKE_HOLD);
 
   	/*Create a screen*/
   	//lv_obj_t * scr = lv_obj_create(NULL, NULL);
   	//lv_scr_load(scr);                                   /*Load the screen*/
+    char mytext[64];
     lv_obj_clean(lv_scr_act());  // clean screen
   	lv_obj_t * title = lv_label_create(lv_scr_act(), NULL);
   	lv_label_set_text(title, "Debug");
