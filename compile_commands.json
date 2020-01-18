@@ -29,7 +29,7 @@
             "-funwind-tables",
             "--std=gnu++17",
             "-o",
-            "bin/main.cpp.o",
+            "C:/Users/langchen/AppData/Local/Temp/tmpp5akht1d/main.cpp.o",
             "src\\main.cpp"
         ],
         "directory": "E:\\D\\Resilio Sync\\mic\\robotics\\pmg\\VEX2018\\pieceoffood\\icecreamcake",
