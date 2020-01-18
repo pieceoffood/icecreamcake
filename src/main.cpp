@@ -221,11 +221,10 @@ void opcontrol() {
 
 		      if (master.get_digital(DIGITAL_L1))  {
 						// only lift arm the stacker is pushed halfway out
-						while (potentiameter.get_value()>3000) {
+						if (potentiameter.get_value()>3000) {
 							stacker.move_velocity(50);
-							pros::delay(20);
 						}
-		  			lift.move_velocity(100);
+		  			else lift.move_velocity(100);
 		  		}
 		      else if (master.get_digital(DIGITAL_L2))  {
 		      	lift.move_velocity(-100);
@@ -240,8 +239,8 @@ void opcontrol() {
 		        claw2.move_velocity(100);
 		      }
 		      else if (master.get_digital(DIGITAL_R2))  {
-		        claw1.move_velocity(-100);
-		        claw2.move_velocity(-100);
+		        claw1.move_velocity(-50);
+		        claw2.move_velocity(-50);
 		      }
 		      else {
 		        claw1.move_velocity(0);
@@ -256,7 +255,7 @@ void opcontrol() {
 		      else if (master.get_digital(DIGITAL_A))  {
 		        stacker.move_velocity(-50);
 		      }
-		      else {
+		      else if (!master.get_digital(DIGITAL_L1)) {
 		        stacker.move_velocity(0);
 		    	}
 					pros::delay(20);
